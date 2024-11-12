@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/sales")
+// we shouldnt pluralize the endpoint
 public class SaleController {
     @Autowired
     private UserService userService;

@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/figures")
+// we shouldnt pluralize the endpoint
 public class FigureController {
     @Autowired
     private FigureRepository figureRepository;
