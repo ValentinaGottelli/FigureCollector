@@ -47,6 +47,13 @@ public class UserService {
     public String addFigureToUser(Long userId, Figure figure) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 
+        boolean hasFigure = user.getFigures().stream()
+                .anyMatch(f -> f.getName().equals(figure.getName()) && f.getSeries().equals(figure.getSeries()));
+
+        if (hasFigure) {
+            return "User already has this figure in their collection.";
+        }
+
         figure.setUser(user);
         Figure savedFigure = figureRepository.save(figure);
 
@@ -57,6 +64,19 @@ public class UserService {
     }
 
 
+    public Review addReview(Long userId, Long figureId, int rating) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        Figure figure = figureRepository.findById(figureId).orElseThrow(() -> new RuntimeException("Figure not found"));
+
+        Review review = new Review(rating, user, figure);
+        reviewRepository.save(review);
+
+        List<Review> reviews = reviewRepository.findByFigure(figure);
+        figure.updateAverageRating(reviews);
+        figureRepository.save(figure);
+
+        return review;
+    }
 
     public String postFigureForSale(Long userId, Long figureId, double price) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
@@ -76,6 +96,13 @@ public class UserService {
 
     public String addCardToUser(Long userId, Card card) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+
+        boolean hasCard = user.getCards().stream()
+                .anyMatch(c -> c.getName().equals(card.getName()) && c.getSeries().equals(card.getSeries()));
+
+        if (hasCard) {
+            return "User already has this card in their collection.";
+        }
 
         card.setUser(user);
         Card savedCard = cardRepository.save(card);
