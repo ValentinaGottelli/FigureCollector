@@ -56,4 +56,8 @@ public class UserController {
         return ResponseEntity.ok(userService.addCardToUser(userId, card));
     }
 
+    @PostMapping("/{userId}/figures/{figureId}/review")
+    public ResponseEntity<Review> addReview(@PathVariable Long userId, @PathVariable Long figureId, @RequestBody int rating) {
+        return ResponseEntity.ok(userService.addReview(userId, figureId, rating));
+    }
 }
