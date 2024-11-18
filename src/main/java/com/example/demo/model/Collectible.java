@@ -9,6 +9,7 @@ public abstract class Collectible {
     private Long id;
     private String name;
     private String series;
+    private int releaseYear;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -17,9 +18,10 @@ public abstract class Collectible {
     public Collectible() {
     }
 
-    public Collectible(String name, String series) {
+    public Collectible(String name, String series, int releaseYear) {
         this.name = name;
         this.series = series;
+        this.releaseYear = releaseYear;
     }
 
     public Long getId() {
@@ -49,4 +51,16 @@ public abstract class Collectible {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public abstract String getDetailedDescription();
+
+    public int getReleaseYear() {
+        return releaseYear;
+    }
+
+    public void setReleaseYear(int releaseYear) {
+        this.releaseYear = releaseYear;
+    }
+
+    public abstract boolean isVintage(int currentYear);
 }

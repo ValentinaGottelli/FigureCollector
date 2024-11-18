@@ -18,9 +18,14 @@ public class Figure extends Collectible {
     public Figure() {
     }
 
-    public Figure(String name, String series, String category) {
-        super(name, series);
+    public Figure(String name, String series, String category, int releaseYear) {
+        super(name, series, releaseYear);
         this.category = category;
+    }
+
+    @Override
+    public boolean isVintage(int currentYear) {
+        return currentYear - getReleaseYear() > 15;
     }
 
 
@@ -44,5 +49,16 @@ public class Figure extends Collectible {
         this.averageRating = averageRating;
     }
 
+    public void updateAverageRating(List<Review> reviews) {
+        this.averageRating = reviews.stream()
+                .mapToInt(Review::getRating)
+                .average()
+                .orElse(0.0);
+    }
 
+    @Override
+    public String getDetailedDescription() {
+        return String.format("Figure: %s [%s] - Category: %s, Average Rating: %.1f",
+                getName(), getSeries(), category, averageRating);
+    }
 }
