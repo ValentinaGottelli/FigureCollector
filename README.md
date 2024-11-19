@@ -9,6 +9,7 @@ Este proyecto es una API diseñada para gestionar coleccionables como cartas, fi
 - Funcionalidad para filtrar cartas comerciables.
 - Descripción detallada de cada coleccionable.
 - Persistencia en base de datos H2.
+- Gestión de usuarios y colecciones.
 
 ## **Tecnologías Utilizadas**
 
@@ -19,10 +20,10 @@ Este proyecto es una API diseñada para gestionar coleccionables como cartas, fi
 
 ## **Estructura del Proyecto**
 
-1. **Modelos (`model`)**: Representan las entidades principales como `Card`, `Figure`, `Review`, y `User`.
+1. **Modelos (`model`)**: Representan las entidades principales como `Card`, `Figure`, `Review`, `User`, etc
 2. **Repositorios (`repository`)**: Interfaz para interactuar con la base de datos.
 3. **Controladores (`controller`)**: Gestionan las operaciones de la API REST.
-4. **Servicios (`service`)** *(opcional si decides añadir lógica de negocio adicional)*.
+4. **Servicios (`service`)**: Contienen la lógica de negocio..
 
 ## **Cómo Ejecutar**
 
@@ -30,20 +31,11 @@ Este proyecto es una API diseñada para gestionar coleccionables como cartas, fi
    ```bash
    git clone <URL-del-repositorio>
    cd <nombre-del-proyecto>
-3. Ejecuta el proyecto con:
+2. Ejecuta el proyecto con:
    ```bash
    mvn spring-boot:run
 
-¡Entendido! Aquí tienes el contenido exactamente como lo necesitas, listo para copiar y pegar en el archivo `README.md`:
-
-```markdown
-3. Ejecuta el proyecto con:
-
-   ```bash
-   mvn spring-boot:run
-   ```
-
-4. Accede a la base de datos H2 en:
+3. Accede a la base de datos H2 en:
 
     ```
    http://localhost:8080/h2-console
@@ -53,19 +45,27 @@ Este proyecto es una API diseñada para gestionar coleccionables como cartas, fi
    - **Usuario**: `sa`
    - **Contraseña**: *(dejar vacío)*
 
-5. Prueba la API REST con herramientas como Postman o curl.
+4. Prueba la API REST con herramientas como Postman o curl.
+
+5. Ejecuta las pruebas unitarias con:
+
+   ```bash
+   mvn test
 
 ## **Endpoints ejemplos**
 
-| Método | Endpoint                     | Descripción                                |
-|--------|-------------------------------|--------------------------------------------|
-| GET    | `/cards`                     | Obtiene todas las cartas.                  |
-| POST   | `/cards`                     | Crea una nueva carta.                      |
-| GET    | `/cards/{id}`                | Obtiene los detalles de una carta por ID.  |
-| PUT    | `/cards/{id}`                | Actualiza una carta existente.             |
-| DELETE | `/cards/{id}`                | Elimina una carta por ID.                  |
-| GET    | `/cards/tradable`            | Lista las cartas elegibles para comerciar. |
-| GET    | `/cards/{id}/trade-description` | Obtiene la descripción de comercio de una carta. |
+Método	Endpoint	      Descripción
+GET	   /cards	      Obtiene todas las cartas.
+POST	   /cards	      Crea una nueva carta.
+GET	   /cards/{id}	   Obtiene los detalles de una carta por ID.
+PUT	   /cards/{id}	   Actualiza una carta existente.
+DELETE	/cards/{id}	   Elimina una carta por ID.
+GET	   /figures	      Obtiene todas las figuras.
+POST	   /figures	      Crea una nueva figura.
+DELETE	/figures/{id}	Elimina una figura por ID.
+GET	   /users	      Obtiene todos los usuarios.
+POST	   /users	      Crea un nuevo usuario.
+DELETE	/users/{id}	   Elimina un usuario por ID.
 
 ## **Ejemplo de Petición**
 
@@ -93,7 +93,17 @@ Content-Type: application/json
 }
 ```
 
----
+### **Crear una Carta**
+```json
+POST /figures
+Content-Type: application/json
+
+{
+  "category": "Anime",
+  "averageRating": 4.5,
+  "releaseYear": 2022
+}
+```
 
 ## **Autor**
 
