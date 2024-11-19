@@ -1,0 +1,148 @@
+@startuml
+' Definir clases principales
+class User {
+    + id : Long
+    + username : String
+    + getFigures() : List<Figure>
+    + getCards() : List<Card>
+    + getCollectibles() : List<Collectible>
+    + addCollectible(collectible : Collectible)
+}
+
+class Figure {
+    + id : Long
+    + category : String
+    + averageRating : double
+    + calculateTradeValue() : double
+    + isEligibleForTrade() : boolean
+    + getDetailedDescription() : String
+    + getUser() : User
+}
+
+class Card {
+    + id : Long
+    + rarity : String
+    + isEligibleForTrade() : boolean
+    + calculateTradeValue() : double
+    + getDetailedDescription() : String
+}
+
+class Sale {
+    + id : Long
+    + price : double
+    + user : User
+    + figure : Figure
+}
+
+class Review {
+    + id : Long
+    + rating : int
+    + user : User
+    + figure : Figure
+}
+
+abstract class Collectible {
+    + id : Long
+    + releaseYear : int
+    + getDetailedDescription() : String
+    + isVintage(currentYear : int) : boolean
+}
+
+interface Tradable {
+    + calculateTradeValue() : double
+    + isEligibleForTrade() : boolean
+}
+
+' Repositorios
+class UserRepository {
+    + findById(id : Long) : User
+    + save(user : User) : void
+}
+
+class FigureRepository {
+    + findById(id : Long) : Figure
+    + save(figure : Figure) : void
+}
+
+class CardRepository {
+    + findById(id : Long) : Card
+    + save(card : Card) : void
+}
+
+class SaleRepository {
+    + save(sale : Sale) : void
+}
+
+class ReviewRepository {
+    + findByFigure(figure : Figure) : List<Review>
+    + save(review : Review) : void
+}
+
+' Servicios
+class UserService {
+    + createUser(user : User) : User
+    + getAllUsers() : List<User>
+    + getUserById(id : Long) : User
+    + deleteUser(id : Long) : void
+    + addFigureToUser(userId : Long, figure : Figure) : String
+    + addCardToUser(userId : Long, card : Card) : String
+    + postFigureForSale(userId : Long, figureId : Long, price : double) : String
+    + addReview(userId : Long, figureId : Long, rating : int) : Review
+    + addCollectibleToUser(userId : Long, collectible : Collectible) : void
+}
+
+' Controladores
+class UserController {
+    + getAllUsers() : List<User>
+    + createUser(user : User) : User
+    + getUserById(id : Long) : User
+    + deleteUser(id : Long) : void
+}
+
+class FigureController {
+    + getAllFigures() : List<Figure>
+    + getFigureById(id : Long) : Figure
+    + createFigure(figure : Figure) : Figure
+    + updateFigure(id : Long, figure : Figure) : Figure
+}
+
+class CardController {
+    + getAllCards() : List<Card>
+    + getCardById(id : Long) : Card
+    + createCard(card : Card) : Card
+    + updateCard(id : Long, card : Card) : Card
+}
+
+class SaleController {
+    + postFigureForSale(userId : Long, figureId : Long, price : double) : String
+}
+
+' Relaciones entre clases
+User --> "1..*" Collectible
+Collectible <|-- Figure
+Collectible <|-- Card
+Figure --> "0..1" User : "pertenece a"
+Card --> "0..1" User : "pertenece a"
+Figure --> "1" Sale : "se vende en"
+Sale --> "1" User : "vendedor"
+Review --> "1" Figure : "reseña de"
+Review --> "1" User : "escrita por"
+
+' Relaciones con repositorios y servicios
+UserRepository --> User
+FigureRepository --> Figure
+CardRepository --> Card
+SaleRepository --> Sale
+ReviewRepository --> Review
+
+UserService --> UserRepository
+UserService --> FigureRepository
+UserService --> CardRepository
+UserService --> SaleRepository
+UserService --> ReviewRepository
+
+UserController --> UserService
+FigureController --> FigureRepository
+CardController --> CardRepository
+SaleController --> UserService
+@enduml

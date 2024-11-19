@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "\"user\"") // Usa comillas dobles para escapar la palabra reservada
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

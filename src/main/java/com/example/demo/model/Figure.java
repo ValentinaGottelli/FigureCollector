@@ -8,6 +8,8 @@ import java.util.List;
 public class Figure extends Collectible implements Tradable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String category;
     private double averageRating;
 
