@@ -62,5 +62,9 @@ public abstract class Collectible {
         this.releaseYear = releaseYear;
     }
 
+    // Método abstracto para mostrar un resumen
+    public abstract String displaySummary();
+
+    // Método que puede ser usado por las clases hijas
     public abstract boolean isVintage(int currentYear);
 }

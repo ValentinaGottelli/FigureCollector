@@ -9,6 +9,7 @@ import java.util.List;
 
 @Service
 public class UserService {
+
     @Autowired
     private UserRepository userRepository;
 
@@ -112,4 +113,17 @@ public class UserService {
 
         return "Card added to user's collection.";
     }
+
+    public void addCollectibleToUser(Long userId, Collectible collectible) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new FigureCollectorException("Usuario no encontrado."));
+
+        if (user.getCollectibles().contains(collectible)) {
+            throw new FigureCollectorException("El usuario ya tiene este elemento en su colección.");
+        }
+
+        user.addCollectible(collectible);
+        userRepository.save(user);
+    }
+
 }

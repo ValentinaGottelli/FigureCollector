@@ -45,7 +45,7 @@ Este proyecto es una API diseñada para gestionar coleccionables como cartas, fi
 
 4. Accede a la base de datos H2 en:
 
-   ```
+    ```
    http://localhost:8080/h2-console
    ```
 

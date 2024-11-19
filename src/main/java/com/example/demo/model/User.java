@@ -1,7 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -10,21 +10,27 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
+    private String name;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Figure> figures;
+    private List<Figure> figures = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Card> cards;
+    private List<Card> cards = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Review> reviews;
+    private List<Review> reviews = new ArrayList<>();
 
-    public User() {
+    // Nueva colección polimórfica
+    @Transient // No se persiste en la base de datos
+    private List<Collectible> collectibles = new ArrayList<>();
+
+    public List<Collectible> getCollectibles() {
+        return collectibles;
     }
 
-    public User(String username) {
-        this.username = username;
+    public User(String name) {
+        this.name = name;
     }
 
     public Long getId() {
@@ -76,4 +82,32 @@ public class User {
         cards.add(card);
         card.setUser(this);
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    // Método para agregar cualquier tipo de Collectible
+    public void addCollectible(Collectible collectible) {
+        collectibles.add(collectible);
+
+        if (collectible instanceof Figure) {
+            figures.add((Figure) collectible); // Persistencia
+            ((Figure) collectible).setUser(this);
+        } else if (collectible instanceof Card) {
+            cards.add((Card) collectible); // Persistencia
+            ((Card) collectible).setUser(this);
+        }
+    }
+
+    // Método para mostrar todos los Collectible
+    public void showCollectibles() {
+        collectibles.forEach(c -> System.out.println(c.getDetailedDescription()));
+    }
+
+    // Getters y setters omitidos por brevedad
 }

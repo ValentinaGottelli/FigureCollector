@@ -22,6 +22,13 @@ public class Card extends Collectible implements Tradable{
         this.rarity = rarity;
     }
 
+    // Implementación del método abstracto
+    @Override
+    public String displaySummary() {
+        return String.format("Card: %s [%s] - Rarity: %s, Released in %d",
+                getName(), getSeries(), rarity, getReleaseYear());
+    }
+
     @Override
     public String getDetailedDescription() {
         return String.format("Card: %s [%s] - Rarity: %s", getName(), getSeries(), rarity);
